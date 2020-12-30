@@ -1,3 +1,5 @@
+import 'package:carrinho_compras/bloc/cart_addition.dart';
+import 'package:carrinho_compras/bloc/cart_bloc.dart';
 import 'package:carrinho_compras/models/cart.dart';
 import 'package:carrinho_compras/models/product.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +11,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Cart cart = Cart();
+  final CartBloc _cartBloc = CartBloc();
 
   Product product;
 
   @override
   Widget build(BuildContext context) {
+    print('build()');
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -24,8 +28,14 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {},
               ),
               CircleAvatar(
+                backgroundColor: Colors.red,
                 maxRadius: 10,
-                child: Text('${cart.itemsLenth}'),
+                child: StreamBuilder<int>(
+                    stream: _cartBloc.itemCount,
+                    initialData: 0,
+                    builder: (context, snapshot) {
+                      return Text('${snapshot.data}');
+                    }),
               ),
             ],
           ),
@@ -42,12 +52,10 @@ class _HomePageState extends State<HomePage> {
             trailing: IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                setState(() {
-                  cart.addItems(
-                    Product('Product $index', 'Description of product $index',
-                        99.00),
-                  );
-                });
+                _cartBloc.cartAddition.add(CartAddition(
+                    Product(
+                        'Product $index', 'Description of product $index', 99),
+                    1));
               },
             ),
           ),

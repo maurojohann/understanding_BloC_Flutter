@@ -4,4 +4,7 @@ class Product {
   final double price;
 
   Product(this.name, this.description, this.price);
+
+  @override
+  String toString() => '$name [$description]';
 }
