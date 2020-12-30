@@ -1,3 +1,4 @@
+import 'package:carrinho_compras/bloc/cart_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/home_page.dart';
@@ -9,13 +10,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return CartProvider(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: HomePage(),
       ),
-      home: HomePage(),
     );
   }
 }
