@@ -1,4 +1,4 @@
-# flutter_bloc
+# flutter_counter
 
 A new Flutter project.
 
