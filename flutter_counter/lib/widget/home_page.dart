@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_counter/bloc/counter_bloc.dart';
 import 'package:flutter_counter/models/counter.dart';
 
 class HomePage extends StatefulWidget {
@@ -7,13 +8,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final Counter counter = Counter();
-
-  void incrementar() {
-    setState(() {
-      counter.addCouter();
-    });
-  }
+  final CounterBloc counterBloc = CounterBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +30,14 @@ class _HomePageState extends State<HomePage> {
         toolbarHeight: kToolbarHeight,
       ),
       body: Center(
-        child: Text(counter.totalCounter.toString()),
+        child: StreamBuilder<int>(
+            stream: counterBloc.counterStream,
+            builder: (context, snapshot) {
+              return Text('${counterBloc.total}');
+            }),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: incrementar,
+        onPressed: counterBloc.incrementar,
         tooltip: 'incrementar',
         child: Icon(Icons.add),
       ),
