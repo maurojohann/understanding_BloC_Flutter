@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_counter/bloc/counter_bloc.dart';
-import 'package:flutter_counter/models/counter.dart';
 
 class HomePage extends StatefulWidget {
   @override

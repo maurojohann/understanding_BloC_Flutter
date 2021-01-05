@@ -4,23 +4,15 @@ import 'package:flutter_counter/models/counter.dart';
 
 class CounterBloc {
   Counter _counter = Counter();
-  StreamController<int> _counterController = StreamController<int>.broadcast();
+  StreamController<int> _counterController = StreamController<int>();
 
   Sink get counterSink => _counterController.sink;
 
-  Stream get counterStream => _counterController.stream;
+  Stream get counterStream => _counterController.stream.asBroadcastStream();
 
   incrementar() {
     _counter.addCouter();
     counterSink.add(_counter.totalCounter);
-  }
-
-  int get total {
-    var cont;
-    counterStream.listen((cont) {
-      cont = _counter.totalCounter;
-    });
-    return cont;
   }
 
   void dipose() {
