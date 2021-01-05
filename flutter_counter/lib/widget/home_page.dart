@@ -32,8 +32,9 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: StreamBuilder<int>(
             stream: counterBloc.counterStream,
+            initialData: 0,
             builder: (context, snapshot) {
-              return Text('${counterBloc.total}');
+              return Text('${snapshot.data}');
             }),
       ),
       floatingActionButton: FloatingActionButton(
