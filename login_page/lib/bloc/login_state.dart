@@ -5,23 +5,27 @@ abstract class LoginState {}
 
 class LoginInitialState extends LoginState {}
 
-class LoginValidatingState extends LoginState {}
+class LoginCpfNotValidState extends LoginState {
+  final String message;
+
+  LoginCpfNotValidState({this.message});
+}
 
 class LoginCpfValidatedState extends LoginState {
-  final bool isValidCpf;
+  final bool cpfIsValid;
 
   LoginCpfValidatedState({
-    this.isValidCpf,
+    this.cpfIsValid,
   });
 
   List<Object> get props => [];
 }
 
 class LoginPassValidatedState extends LoginState {
-  final bool isValidPassword;
+  final bool passwordIsValid;
 
   LoginPassValidatedState({
-    this.isValidPassword,
+    this.passwordIsValid,
   });
 
   List<Object> get props => [];

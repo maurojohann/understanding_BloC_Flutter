@@ -12,17 +12,33 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    bool passWordIsValid = false;
+    bool passwordIsValid = false;
+    bool cpfIsvalid = false;
     if (event is LoginValidatingCpfEvent) {
-      bool cpfIsvalid = CPF.isValid(event.cpf);
-      yield LoginCpfValidatedState(isValidCpf: cpfIsvalid);
-    } else if (event is LoginValidatingPassEvent) {
-      if (event.password == null || event.password.isEmpty) {
-        passWordIsValid = false;
-        yield LoginPassValidatedState(isValidPassword: passWordIsValid);
+      if (event.cpf == null || event.cpf.isEmpty) {
+        yield LoginCpfNotValidState(message: null);
+      } else if (event.cpf.trim().length < 11) {
+        yield LoginCpfNotValidState(message: 'Cpf Incompleto');
+      } else if (event.cpf.length == 11) {
+        cpfIsvalid = CPF.isValid(event.cpf);
+        yield LoginCpfValidatedState(cpfIsValid: cpfIsvalid);
+        if (cpfIsvalid != false) {
+          yield LoginCpfNotValidState(message: null);
+        } else {
+          yield LoginCpfNotValidState(message: 'CPF Invalido');
+        }
+      }
+    }
+
+    if (event is LoginValidatingPassEvent) {
+      if (event.password == null ||
+          event.password.isEmpty ||
+          event.password.length < 3) {
+        passwordIsValid = false;
+        yield LoginPassValidatedState(passwordIsValid: passwordIsValid);
       } else {
-        passWordIsValid = true;
-        yield LoginPassValidatedState(isValidPassword: passWordIsValid);
+        passwordIsValid = true;
+        yield LoginPassValidatedState(passwordIsValid: passwordIsValid);
       }
     }
   }

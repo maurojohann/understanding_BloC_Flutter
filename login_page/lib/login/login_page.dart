@@ -21,6 +21,9 @@ class _LoginPageState extends State<LoginPage> {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     bool _cpfIsValid = false;
     bool _passwordValid = false;
+    String errorMessage;
+    final _formKey = GlobalKey<FormState>();
+
     final Color secundaryColor = Color.fromARGB(255, 26, 41, 72);
     final Color primaryColor = Color.fromARGB(255, 241, 112, 33);
     return Scaffold(
@@ -42,75 +45,79 @@ class _LoginPageState extends State<LoginPage> {
                       EdgeInsets.only(top: 20, bottom: 20, left: 10, right: 10),
                   // height: 280,
                   width: MediaQuery.of(context).size.width / 1.1,
-                  child: BlocListener<LoginBloc, LoginState>(
-                    listener: (context, state) {
+                  child: BlocBuilder<LoginBloc, LoginState>(
+                    builder: (context, state) {
                       if (state is LoginCpfValidatedState) {
-                        _cpfIsValid = state.isValidCpf;
-                        print(state.isValidCpf.toString());
+                        _cpfIsValid = state.cpfIsValid;
+                        print(state.cpfIsValid.toString());
                       }
+                      if (state is LoginCpfNotValidState) {
+                        errorMessage = state.message;
+                      }
+
                       if (state is LoginPassValidatedState) {
-                        _passwordValid = state.isValidPassword;
+                        _passwordValid = state.passwordIsValid;
                         print(_passwordValid.toString());
                       }
+
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'login',
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 28),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'CPF',
+                              errorText: errorMessage,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            onChanged: (value) {
+                              _loginBloc
+                                  .add(LoginValidatingCpfEvent(cpf: value));
+                            },
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 28),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Senha',
+                              errorText: null,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
+                            onChanged: (value) {
+                              _loginBloc.add(
+                                  LoginValidatingPassEvent(password: value));
+                            },
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 28)),
+                          ElevatedButton(
+                            child: Text('enter'.toUpperCase()),
+                            onPressed:
+                                _cpfIsValid == true && _passwordValid == true
+                                    ? () {}
+                                    : null,
+                          ),
+                        ],
+                      );
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'login',
-                          style: TextStyle(color: primaryColor),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 28),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'CPF',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          onChanged: (value) {
-                            _loginBloc.add(LoginValidatingCpfEvent(cpf: value));
-                          },
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 28),
-                        ),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Senha',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          keyboardType:
-                              TextInputType.numberWithOptions(decimal: true),
-                          onChanged: (value) {
-                            _loginBloc
-                                .add(LoginValidatingPassEvent(password: value));
-                          },
-                        ),
-                        Padding(padding: EdgeInsets.only(top: 28)),
-                        BlocBuilder<LoginBloc, LoginState>(
-                          builder: (context, state) {
-                            return ElevatedButton(
-                              child: Text('enter'.toUpperCase()),
-                              onPressed:
-                                  _cpfIsValid == true && _passwordValid == true
-                                      ? () {}
-                                      : null,
-                            );
-                          },
-                        )
-                      ],
-                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

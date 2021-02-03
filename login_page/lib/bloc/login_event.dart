@@ -18,5 +18,3 @@ class LoginValidatingPassEvent extends LoginEvent {
     this.password,
   });
 }
-
-class LoginValidated extends LoginEvent {}
