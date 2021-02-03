@@ -14,18 +14,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     bool passwordIsValid = false;
     bool cpfIsvalid = false;
+
     if (event is LoginValidatingCpfEvent) {
       if (event.cpf == null || event.cpf.isEmpty) {
-        yield LoginCpfNotValidState(message: null);
+        yield LoginCpfValidatedState(cpfIsValid: cpfIsvalid, message: null);
       } else if (event.cpf.trim().length < 11) {
-        yield LoginCpfNotValidState(message: 'Cpf Incompleto');
+        yield LoginCpfValidatedState(
+            cpfIsValid: cpfIsvalid, message: 'Cpf Incompleto');
       } else if (event.cpf.length == 11) {
         cpfIsvalid = CPF.isValid(event.cpf);
-        yield LoginCpfValidatedState(cpfIsValid: cpfIsvalid);
         if (cpfIsvalid != false) {
-          yield LoginCpfNotValidState(message: null);
+          yield LoginCpfValidatedState(cpfIsValid: cpfIsvalid, message: null);
         } else {
-          yield LoginCpfNotValidState(message: 'CPF Invalido');
+          yield LoginCpfValidatedState(
+              cpfIsValid: cpfIsvalid, message: 'CPF Invalido');
         }
       }
     }

@@ -49,10 +49,8 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context, state) {
                       if (state is LoginCpfValidatedState) {
                         _cpfIsValid = state.cpfIsValid;
-                        print(state.cpfIsValid.toString());
-                      }
-                      if (state is LoginCpfNotValidState) {
                         errorMessage = state.message;
+                        print(state.cpfIsValid.toString());
                       }
 
                       if (state is LoginPassValidatedState) {
@@ -72,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextFormField(
                             decoration: InputDecoration(
-                              labelText: 'CPF',
+                              labelText: 'PF',
                               errorText: errorMessage,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25),

@@ -13,9 +13,11 @@ class LoginCpfNotValidState extends LoginState {
 
 class LoginCpfValidatedState extends LoginState {
   final bool cpfIsValid;
+  final String message;
 
   LoginCpfValidatedState({
     this.cpfIsValid,
+    this.message,
   });
 
   List<Object> get props => [];
