@@ -25,9 +25,11 @@ class LoginCpfValidatedState extends LoginState {
 
 class LoginPassValidatedState extends LoginState {
   final bool passwordIsValid;
+  final String message;
 
   LoginPassValidatedState({
     this.passwordIsValid,
+    this.message,
   });
 
   List<Object> get props => [];

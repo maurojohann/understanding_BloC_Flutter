@@ -37,10 +37,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           event.password.isEmpty ||
           event.password.length < 3) {
         passwordIsValid = false;
-        yield LoginPassValidatedState(passwordIsValid: passwordIsValid);
+        yield LoginPassValidatedState(
+            passwordIsValid: passwordIsValid, message: 'sss');
       } else {
         passwordIsValid = true;
-        yield LoginPassValidatedState(passwordIsValid: passwordIsValid);
+        yield LoginPassValidatedState(
+            passwordIsValid: passwordIsValid, message: null);
       }
     }
   }
